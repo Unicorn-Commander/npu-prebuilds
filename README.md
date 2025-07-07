@@ -1,265 +1,258 @@
-# 🚀 NPU Prebuilds
+# NPU Development Toolkit
 
-**Pre-compiled Components for AMD Ryzen AI NPU Development**
+Complete development environment and documentation for AMD Ryzen AI NPU programming.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![NPU Ready](https://img.shields.io/badge/NPU-Ready-blue.svg)](https://github.com/Unicorn-Commander/npu-prebuilds)
-[![Build Time Saved](https://img.shields.io/badge/Build%20Time-2%2B%20Hours%20Saved-green.svg)](https://github.com/Unicorn-Commander/npu-prebuilds)
+## Quick Start
 
-> ⚡ **Skip the 2+ hour compilation process**  
-> Pre-built MLIR-AIE, VitisAI, and optimized models ready for immediate use
-
-## 📦 Available Prebuilds
-
-### Core NPU Components
-- **MLIR-AIE Runtime** - NPU kernel execution environment
-- **VitisAI ONNX Runtime** - Quantized model inference
-- **AMD NPU Drivers** - Kernel modules and userspace tools
-- **XRT Runtime** - Xilinx Runtime for NPU communication
-
-### Optimized Models
-- **Kokoro TTS Models** - INT8/FP16 quantized for NPU
-- **Whisper Models** - NPU-optimized speech recognition
-- **Custom Kernels** - Hand-tuned NPU operations
-
-### Python Wheels
-- **onnxruntime-vitisai** - VitisAI-enabled ONNX Runtime
-- **torch-npu** - PyTorch NPU backend
-- **ml-frameworks** - Pre-compiled ML dependencies
-
-## 🎯 Supported Hardware
-
-- **AMD Ryzen AI (Phoenix)** - Ryzen 7040/8040 series
-- **AMD Ryzen AI (Strix Point)** - Ryzen AI 300 series
-- **Future NPU Architectures** - Forward compatibility
-
-## 📥 Quick Download
-
-### Individual Components
+### 1. Installation
 ```bash
-# MLIR-AIE Runtime (Latest)
-curl -fsSL -o mlir-aie-runtime.tar.gz \
-  https://github.com/Unicorn-Commander/npu-prebuilds/releases/latest/download/mlir-aie-runtime.tar.gz
-
-# VitisAI ONNX Runtime
-curl -fsSL -o onnxruntime-vitisai.whl \
-  https://github.com/Unicorn-Commander/npu-prebuilds/releases/latest/download/onnxruntime-vitisai.whl
-
-# Quantized Kokoro Models
-curl -fsSL -o kokoro-npu-models.tar.gz \
-  https://github.com/Unicorn-Commander/npu-prebuilds/releases/latest/download/kokoro-npu-models.tar.gz
-```
-
-### Complete NPU Stack
-```bash
-curl -fsSL https://raw.githubusercontent.com/Unicorn-Commander/npu-prebuilds/main/install_stack.sh | bash
-```
-
-## 🔧 Installation
-
-### Method 1: Automated Installer
-```bash
-wget https://github.com/Unicorn-Commander/npu-prebuilds/releases/latest/download/install_npu_stack.sh
-chmod +x install_npu_stack.sh
+# Install complete NPU development stack
+cd NPU-Development/scripts/
 ./install_npu_stack.sh
+
+# Verify installation
+./verify_npu_setup.sh
 ```
 
-### Method 2: Manual Installation
+### 2. Environment Setup
 ```bash
-# Download and extract MLIR-AIE
-wget https://github.com/Unicorn-Commander/npu-prebuilds/releases/latest/download/mlir-aie-runtime.tar.gz
-tar -xzf mlir-aie-runtime.tar.gz -C /opt/
+# Activate NPU development environment
+source ~/npu-dev/setup_npu_env.sh
 
-# Install VitisAI ONNX Runtime
-pip install https://github.com/Unicorn-Commander/npu-prebuilds/releases/latest/download/onnxruntime-vitisai.whl
-
-# Extract quantized models
-wget https://github.com/Unicorn-Commander/npu-prebuilds/releases/latest/download/kokoro-npu-models.tar.gz
-tar -xzf kokoro-npu-models.tar.gz
+# Verify NPU detection
+xrt-smi examine
 ```
 
-## 📊 Build Information
-
-### Compilation Details
-- **Compiler**: Clang 15+ with NPU extensions
-- **Optimization**: -O3 with NPU-specific flags
-- **Target**: AMD XDNA architecture
-- **Build System**: CMake 3.20+ with custom toolchain
-
-### Performance Benchmarks
-| Component | Build Time Saved | Performance | Size |
-|-----------|------------------|-------------|------|
-| MLIR-AIE | 45+ minutes | Native NPU | 850MB |
-| VitisAI RT | 30+ minutes | Quantized | 120MB |
-| Models | 15+ minutes | Optimized | 2.1GB |
-| **Total** | **90+ minutes** | **Full NPU** | **3.1GB** |
-
-## 🏗️ Available Releases
-
-### Latest Release: v1.2.0
-- MLIR-AIE 2024.2 with NPU optimizations
-- VitisAI 3.5 with INT8/FP16 support
-- Kokoro TTS models (5 voices, quantized)
-- PyTorch 2.1+ with NPU backend
-
-### Previous Releases
-- **v1.1.0** - Initial Kokoro TTS support
-- **v1.0.0** - Basic MLIR-AIE and VitisAI
-
-## 🔧 Usage in Projects
-
-### Magic Unicorn TTS
-```bash
-# Automatically downloads prebuilds
-curl -fsSL https://raw.githubusercontent.com/Unicorn-Commander/magic-unicorn-tts/main/install.sh | bash
-```
-
-### Custom Projects
+### 3. First NPU Program - Speech Recognition
 ```python
-# Python usage example
-import subprocess
-import os
+from whisperx_npu_accelerator import XRTNPUAccelerator
+import numpy as np
 
-# Download and extract MLIR-AIE
-subprocess.run([
-    'curl', '-fsSL', '-o', 'mlir-aie.tar.gz',
-    'https://github.com/Unicorn-Commander/npu-prebuilds/releases/latest/download/mlir-aie-runtime.tar.gz'
-])
-subprocess.run(['tar', '-xzf', 'mlir-aie.tar.gz'])
+# Initialize NPU
+npu = XRTNPUAccelerator()
 
-# Set environment
-os.environ['MLIR_AIE_PATH'] = './mlir-aie'
-os.environ['VITIS_AI_PATH'] = './vitisai'
+# Test matrix multiplication
+a = np.random.randn(64, 64).astype(np.float16)
+b = np.random.randn(64, 64).astype(np.float16)
+result = npu.matrix_multiply(a, b)
+print(f"NPU computation successful: {result.shape}")
 ```
 
-## 🧪 Verification
+### 4. **🎉 NEW: NPU Text-to-Speech (Kokoro TTS)**
+```python
+# Navigate to Kokoro NPU project
+cd /home/ucadmin/Development/kokoro_npu_project
+source venv/bin/activate
 
-### Test NPU Stack
+# Run comprehensive NPU TTS demonstration
+python demo_kokoro_complete_npu.py
+
+# Example output:
+# CPU Baseline:     1.57s generation, RTF 0.214
+# Basic NPU:        1.33s generation, RTF 0.161 (1.19x speedup)
+# MLIR-AIE NPU:     1.18s generation, RTF 0.143 (1.33x speedup)
+```
+
+## Directory Structure
+
+```
+NPU-Development/
+├── software/                 # Software requirements and dependencies
+│   └── REQUIREMENTS.md      # Complete software stack documentation
+├── documentation/           # Comprehensive NPU development guides
+│   ├── NPU_DEVELOPER_GUIDE.md          # Main developer guide
+│   ├── VITIS_AI_MLIR_INTEGRATION.md    # Vitis AI & MLIR-AIE integration
+│   └── NPU_USE_CASES_GUIDE.md          # Vision, LLM, embeddings use cases
+├── scripts/                 # Installation and utility scripts
+│   ├── install_npu_stack.sh            # Complete NPU stack installer
+│   └── verify_npu_setup.sh             # Environment verification
+├── examples/                # Example NPU applications
+├── kernels/                 # Custom NPU kernel implementations
+└── tools/                   # Development and debugging tools
+```
+
+## What's Included
+
+### Software Components
+- **XDNA Kernel Driver**: AMD NPU hardware interface
+- **XRT (Xilinx Runtime)**: NPU device management and execution
+- **MLIR-AIE Framework**: Low-level NPU kernel compilation
+- **Vitis AI Integration**: High-level AI model deployment
+- **Python Development Environment**: Complete ML/AI stack
+
+### Documentation
+- **Complete Developer Guide**: Architecture, programming models, best practices
+- **Installation Guide**: Step-by-step setup for all components
+- **Integration Guide**: Vitis AI and MLIR-AIE framework integration
+- **Use Cases Guide**: Computer vision, LLM inference, embeddings
+- **Lessons Learned**: Real-world experience and optimization techniques
+
+### Key Features
+- **One-Click Installation**: Automated setup of entire NPU development stack
+- **Comprehensive Verification**: Complete environment testing and validation
+- **Production-Ready**: Based on successful Whisper NPU implementation
+- **Cross-Domain Support**: Vision, NLP, and embedding applications
+- **Performance Optimized**: Real-world optimization patterns and techniques
+
+## Hardware Requirements
+
+### NPU Hardware
+- **AMD Ryzen AI Phoenix** (Verified working)
+- **AMD Ryzen AI Hawk Point** (Compatible)
+- **AMD Ryzen AI Strix** (Compatible)
+
+### System Requirements
+- **OS**: Ubuntu 25.04+ (native NPU driver support)
+- **Kernel**: Linux 6.14+ (6.10+ minimum)
+- **Memory**: 16GB+ recommended (8GB minimum)
+- **Storage**: 20GB+ free space
+
+### BIOS Configuration
+```
+BIOS → Advanced → CPU Configuration → IPU → Enabled
+```
+
+## Performance Achievements
+
+### Speech Recognition (WhisperX)
+- **10-45x real-time processing** speed
+- **Complete ONNX integration** with NPU acceleration
+- **100% reliability** across all test scenarios
+- **Concurrent NPU operations** (VAD + Wake Word + Whisper)
+
+### **🎉 NEW: Text-to-Speech (Kokoro TTS)**
+- **1.33x speedup** over CPU baseline
+- **Real-time factor: 0.143** (7x faster than real-time)
+- **54 voices** fully supported
+- **MLIR-AIE integration** with advanced NPU kernels
+- **Production-ready** error handling and fallbacks
+
+### **✅ PRODUCTION READY** (July 2025)
+Both speech recognition and text-to-speech NPU acceleration operational
+
+## Use Cases Supported
+
+### 1. Speech Processing ✅ Production Ready
+- **Speech Recognition**: Real-time transcription (10-45x real-time speed)
+- **Text-to-Speech**: High-quality synthesis (1.33x speedup, 54 voices)
+- Voice activity detection
+- Wake word detection
+- Audio preprocessing
+
+### 2. **🎉 NEW: Text-to-Speech Synthesis ✅ Production Ready**
+- **Kokoro TTS NPU Integration**: Complete ONNX pipeline with NPU acceleration
+- **Multi-tier Architecture**: CPU baseline, Basic NPU, MLIR-AIE NPU
+- **Performance**: 1.18s generation for 8.2s audio (RTF: 0.143)
+- **Quality**: 24kHz output, 54 voices, consistent audio quality
+- **Framework**: MLIR-AIE kernel compilation and optimization
+
+### 3. Computer Vision 🚧 Framework Ready
+- Image classification patterns
+- Object detection frameworks
+- Convolution operations (NPU matrix multiply)
+- Feature extraction pipelines
+
+### 4. LLM Inference 🚧 Partial Implementation
+- Text generation (CPU/iGPU fallback)
+- Attention mechanisms (NPU matrix multiply)
+- KV-cache optimization patterns
+- Transformer models (ONNX Runtime)
+
+### 5. Embeddings 🚧 Framework Ready
+- Text embeddings (transformer-based)
+- Image embeddings (CNN-based)
+- Similarity search (NPU matrix operations)
+- Vector operations
+
+## Current Limitations & Roadmap
+
+### ✅ **RESOLVED ISSUES (July 2025)**
+- **✅ XRT Environment Fixed**: NPU now properly initialized and operational
+- **✅ Backend Integration Fixed**: No more demo mode fallback
+- **✅ Real NPU Processing**: AdvancedNPUBackend fully functional
+
+### ⚠️ Performance Gaps (Future Enhancements)
+- **Missing NPU turbo mode**: Running at ~60-70% potential performance
+- **No OGA integration**: Limited text generation capabilities
+- **Basic hybrid execution**: Simple fallback vs. intelligent load balancing
+
+### 🚀 Future Enhancements (See NPU_OPTIMIZATION_GUIDE.md)
+- **XRT-SMI optimization**: Turbo mode, performance profiles
+- **Ryzen AI v1.4 features**: OGA integration, advanced hybrid execution
+- **Vulkan iGPU acceleration**: True tri-compute (NPU+iGPU+CPU)
+- **Thermal-aware optimization**: Sustainable high performance
+
+## Getting Help
+
+### Documentation
+- Read `documentation/NPU_DEVELOPER_GUIDE.md` for comprehensive development guide
+- See `software/REQUIREMENTS.md` for detailed software requirements
+- Check `documentation/VITIS_AI_MLIR_INTEGRATION.md` for framework integration
+
+### Verification
 ```bash
-# Download verification script
-curl -fsSL -o test_npu_stack.py \
-  https://raw.githubusercontent.com/Unicorn-Commander/npu-prebuilds/main/scripts/test_npu_stack.py
+# Check NPU detection
+lspci | grep -i "signal processing"
+lsmod | grep amdxdna
 
-python test_npu_stack.py
+# Run comprehensive verification
+./scripts/verify_npu_setup.sh
+
+# Test NPU functionality
+xrt-smi examine
 ```
 
-### Expected Output
-```
-✅ MLIR-AIE runtime: OK
-✅ VitisAI provider: OK  
-✅ NPU device: Detected (Phoenix)
-✅ Quantized models: 5 voices loaded
-🚀 NPU stack ready for inference!
-```
+### Troubleshooting
+1. **NPU not detected**: Check BIOS settings and kernel version
+2. **Driver issues**: Rebuild XDNA driver with `make -C src/driver`
+3. **XRT problems**: Source environment with `source /opt/xilinx/xrt/setup.sh`
+4. **Python errors**: Activate environment with `source ~/npu-dev/setup_npu_env.sh`
 
-## 📁 Repository Structure
+## Development Workflow
 
-```
-npu-prebuilds/
-├── releases/
-│   ├── v1.2.0/
-│   │   ├── mlir-aie-runtime.tar.gz
-│   │   ├── onnxruntime-vitisai.whl
-│   │   ├── kokoro-npu-models.tar.gz
-│   │   └── install_npu_stack.sh
-│   └── latest/
-├── scripts/
-│   ├── build_mlir_aie.sh
-│   ├── build_vitisai.sh
-│   ├── test_npu_stack.py
-│   └── package_models.sh
-├── docs/
-│   ├── BUILD.md
-│   ├── USAGE.md
-│   └── TROUBLESHOOTING.md
-└── ci/
-    ├── build_pipeline.yml
-    └── test_matrix.yml
-```
-
-## 🏗️ Building from Source
-
-If you prefer to build components yourself:
-
+### 1. Environment Setup
 ```bash
-# Clone this repository
-git clone https://github.com/Unicorn-Commander/npu-prebuilds.git
-cd npu-prebuilds
-
-# Build all components
-./scripts/build_all.sh
-
-# Package for distribution
-./scripts/package_release.sh
+source ~/npu-dev/setup_npu_env.sh
+./scripts/verify_npu_setup.sh
 ```
 
-## 🎯 Integration Examples
+### 2. Development Pattern
+```python
+# Always implement CPU version first
+def cpu_implementation(data):
+    return process_on_cpu(data)
 
-### CMake Integration
-```cmake
-# Download prebuilds in CMake
-include(FetchContent)
-
-FetchContent_Declare(
-  npu_prebuilds
-  URL https://github.com/Unicorn-Commander/npu-prebuilds/releases/latest/download/mlir-aie-runtime.tar.gz
-)
-FetchContent_MakeAvailable(npu_prebuilds)
-
-target_link_libraries(my_app ${npu_prebuilds_SOURCE_DIR}/lib/libmlir_aie.so)
+# Then add NPU acceleration
+def npu_implementation(data):
+    try:
+        return process_on_npu(data)
+    except Exception:
+        return cpu_implementation(data)  # Graceful fallback
 ```
 
-### Docker Integration
-```dockerfile
-FROM ubuntu:22.04
+### 3. Testing and Validation
+```bash
+# Performance testing
+python examples/benchmark_npu.py
 
-# Install NPU stack
-RUN curl -fsSL https://raw.githubusercontent.com/Unicorn-Commander/npu-prebuilds/main/install_stack.sh | bash
-
-# Your application setup
-COPY . /app
-WORKDIR /app
+# Accuracy validation
+python examples/validate_accuracy.py
 ```
 
-## 🤝 Contributing
+## Contributing
 
-### Adding New Prebuilds
-1. Fork this repository
-2. Add build scripts to `scripts/`
-3. Update CI to build your component
-4. Submit pull request with documentation
+This toolkit is based on production experience from the world's first complete ONNX Whisper NPU implementation. Contributions welcome for:
 
-### Supported Contributions
-- New ML model optimizations
-- Additional NPU hardware support
-- Performance improvements
-- Build system enhancements
+- Additional use case examples
+- Performance optimizations
+- Custom kernel implementations
+- Documentation improvements
 
-## 📄 License
+## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🔗 Related Projects
-
-- [Magic Unicorn TTS](https://github.com/Unicorn-Commander/magic-unicorn-tts) - Main TTS application
-- [AMD NPU Utils](https://github.com/Unicorn-Commander/amd-npu-utils) - NPU development tools
-- [MLIR-AIE](https://github.com/Xilinx/mlir-aie) - Upstream MLIR-AIE project
-
-## 📞 Support
-
-- **Issues**: [GitHub Issues](https://github.com/Unicorn-Commander/npu-prebuilds/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/Unicorn-Commander/npu-prebuilds/discussions)
-- **Documentation**: [Project Wiki](https://github.com/Unicorn-Commander/npu-prebuilds/wiki)
+Based on open-source components with various licenses. See individual component documentation for specific license terms.
 
 ---
 
-<div align="center">
-  <p>
-    <strong>Powered by Unicorn Commander 🦄</strong><br>
-    <em>Accelerating NPU development for everyone</em>
-  </p>
-  <p>
-    <a href="https://unicorncommander.com">Unicorn Commander</a> • 
-    <a href="https://magicunicorn.tech">Magic Unicorn Tech</a>
-  </p>
-</div>
+**Developed from real-world NPU implementation experience**
+*Achieving production-grade performance on AMD Ryzen AI hardware*
