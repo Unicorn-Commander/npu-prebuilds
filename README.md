@@ -1,6 +1,6 @@
 # NPU Development Toolkit
 
-Complete development environment and documentation for AMD Ryzen AI NPU programming.
+Complete development environment and documentation for AMD Ryzen 9 8945HS NPU Phoenix (AIE-ML) programming.
 
 ## Quick Start
 
@@ -97,15 +97,18 @@ NPU-Development/
 ## Hardware Requirements
 
 ### NPU Hardware
-- **AMD Ryzen AI Phoenix** (Verified working)
+- **AMD Ryzen 9 8945HS** with NPU Phoenix (AIE-ML) - Primary target (NucBox K11, 96GB RAM)
+- **AMD Ryzen AI Phoenix** (Compatible)
 - **AMD Ryzen AI Hawk Point** (Compatible)
 - **AMD Ryzen AI Strix** (Compatible)
 
 ### System Requirements
-- **OS**: Ubuntu 25.04+ (native NPU driver support)
-- **Kernel**: Linux 6.14+ (6.10+ minimum)
-- **Memory**: 16GB+ recommended (8GB minimum)
+- **OS**: Ubuntu 25.04 with KDE Plasma (Linux kernel 6.14.0-23-generic)
+- **Memory**: 96GB RAM (16GB allocated to VRAM, heterogeneous memory architecture)
 - **Storage**: 20GB+ free space
+- **NPU Firmware**: v1.5.5.391
+- **XRT Runtime**: v2.20.0
+- **AMDXDNA Driver**: v2.20.0_20250623
 
 ### BIOS Configuration
 ```
