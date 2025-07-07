@@ -19,6 +19,9 @@ cd NPU-Development/scripts/
 # Activate NPU development environment
 source ~/npu-dev/setup_npu_env.sh
 
+# Enable NPU turbo mode for maximum performance
+sudo /opt/xilinx/xrt/bin/xrt-smi configure --device 0000:c7:00.1 --pmode turbo
+
 # Verify NPU detection
 xrt-smi examine
 ```
@@ -197,6 +200,9 @@ Both speech recognition and text-to-speech NPU acceleration operational
 # Check NPU detection
 lspci | grep -i "signal processing"
 lsmod | grep amdxdna
+
+# Enable NPU turbo mode for maximum performance  
+sudo /opt/xilinx/xrt/bin/xrt-smi configure --device 0000:c7:00.1 --pmode turbo
 
 # Run comprehensive verification
 ./scripts/verify_npu_setup.sh
